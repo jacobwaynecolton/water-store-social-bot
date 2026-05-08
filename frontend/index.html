@@ -22,6 +22,50 @@
 
   <main>
 
+    <!-- Capabilities overview -->
+    <section class="capabilities">
+      <h2>What this bot does</h2>
+      <div class="cap-grid">
+
+        <div class="cap-card">
+          <div class="cap-icon">✍️</div>
+          <h3>Writes captions</h3>
+          <p>Uses Claude AI to write platform-specific captions for Facebook and Instagram, rotating through 9 content themes covering water systems, hot tubs, BBQs, saunas, hydration tips, and more.</p>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-icon">🖼️</div>
+          <h3>Generates images</h3>
+          <p>Picks a real photo from your approved photo folder first. If none matches the post theme, it generates a DALL-E image — watercolour style for lifestyle content, infographic style for educational posts.</p>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-icon">📸</div>
+          <h3>Auto photo tagging</h3>
+          <p>Drop any photo into <code>data/approved_photos/</code> with any filename. Claude vision looks at it and figures out what it shows — no renaming needed. New photos are tagged automatically every 6 hours.</p>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-icon">📅</div>
+          <h3>Posts on a schedule</h3>
+          <p>Runs 3 times a day by default (9am, 1pm, 6pm). Avoids repeating similar topics back to back by tracking the last 6 posts and telling Claude what's already been covered.</p>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-icon">📲</div>
+          <h3>Cross-posts to both platforms</h3>
+          <p>Publishes to the Facebook Page and Instagram Business account simultaneously. Facebook gets a conversational caption; Instagram gets a punchy version with hashtags.</p>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-icon">💬</div>
+          <h3>Replies to comments</h3>
+          <p>Checks all posts from the last 7 days every 30 minutes. Any new comment gets a short, on-brand reply written by Claude. Complaints are acknowledged and directed to call or DM.</p>
+        </div>
+
+      </div>
+    </section>
+
     <!-- Upcoming jobs -->
     <section>
       <h2>Scheduled Jobs</h2>
