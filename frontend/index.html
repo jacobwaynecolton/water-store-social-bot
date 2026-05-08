@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Water Store Social Bot</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <h1>Water Store Social Bot</h1>
+      <span id="status-badge" class="badge badge-unknown">checking...</span>
+    </div>
+    <div class="header-right">
+      <button id="btn-post-now" class="btn btn-primary">Post Now</button>
+      <button id="btn-pause" class="btn btn-secondary">Pause</button>
+      <button id="btn-resume" class="btn btn-secondary">Resume</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Upcoming jobs -->
+    <section>
+      <h2>Scheduled Jobs</h2>
+      <table id="jobs-table">
+        <thead>
+          <tr><th>Job</th><th>Next Run</th></tr>
+        </thead>
+        <tbody id="jobs-body">
+          <tr><td colspan="2" class="empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Post history -->
+    <section>
+      <h2>Post History</h2>
+      <table id="posts-table">
+        <thead>
+          <tr>
+            <th>Theme</th>
+            <th>Status</th>
+            <th>Posted At</th>
+            <th>Caption</th>
+            <th>Facebook</th>
+            <th>Instagram</th>
+          </tr>
+        </thead>
+        <tbody id="posts-body">
+          <tr><td colspan="6" class="empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Comment log -->
+    <section>
+      <h2>Comment Replies</h2>
+      <table id="comments-table">
+        <thead>
+          <tr>
+            <th>Platform</th>
+            <th>From</th>
+            <th>Comment</th>
+            <th>Our Reply</th>
+            <th>Replied At</th>
+          </tr>
+        </thead>
+        <tbody id="comments-body">
+          <tr><td colspan="5" class="empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

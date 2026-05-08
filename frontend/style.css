@@ -1,0 +1,150 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f5f7fa;
+  color: #1a1a2e;
+  font-size: 14px;
+}
+
+/* Header */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+header h1 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.header-right {
+  display: flex;
+  gap: 8px;
+}
+
+/* Buttons */
+.btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn:hover { opacity: 0.85; }
+.btn-primary  { background: #3b82f6; color: #fff; }
+.btn-secondary { background: #e2e8f0; color: #374151; }
+
+/* Badge */
+.badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.badge-running { background: #dcfce7; color: #166534; }
+.badge-paused  { background: #fef9c3; color: #854d0e; }
+.badge-unknown { background: #f1f5f9; color: #64748b; }
+
+/* Main layout */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+section h2 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #374151;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+}
+
+thead th {
+  background: #f8fafc;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+tbody tr {
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.1s;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #f8fafc; }
+
+tbody td {
+  padding: 10px 14px;
+  vertical-align: top;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty {
+  text-align: center;
+  color: #94a3b8;
+  padding: 20px !important;
+}
+
+/* Status pills inside table */
+.pill {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.pill-posted  { background: #dcfce7; color: #166534; }
+.pill-pending { background: #e0f2fe; color: #075985; }
+.pill-failed  { background: #fee2e2; color: #991b1b; }
+.pill-fb      { background: #dbeafe; color: #1d4ed8; }
+.pill-ig      { background: #fae8ff; color: #7e22ce; }
+
+/* Caption cell — allow wrapping here */
+td.caption-cell {
+  white-space: normal;
+  line-height: 1.4;
+  font-size: 13px;
+  color: #475569;
+}
+
+a { color: #3b82f6; text-decoration: none; }
+a:hover { text-decoration: underline; }
