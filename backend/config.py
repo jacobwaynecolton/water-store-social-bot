@@ -15,34 +15,50 @@ META_API_VERSION = "v21.0"
 META_API_BASE = f"https://graph.facebook.com/{META_API_VERSION}"
 
 # --- Scheduler ---
-# Times the bot posts each day in HH:MM 24h format, comma-separated
 POST_TIMES = os.getenv("POST_TIMES", "09:00,13:00,18:00").split(",")
-# How often to poll for new comments (minutes)
 COMMENT_CHECK_INTERVAL = int(os.getenv("COMMENT_CHECK_INTERVAL", "30"))
 
-# --- Business context passed to Claude ---
-BUSINESS_NAME = "Water Store OS"
+# --- Business context ---
+BUSINESS_NAME = "The Water Store Owen Sound"
 BUSINESS_WEBSITE = "waterstoreos.ca"
 BUSINESS_DESCRIPTION = """
-We're a water specialty store in Ontario. We sell water filtration systems,
-reverse osmosis systems, water softeners, UV purifiers, and offer home water
-delivery services. Our customers care about clean, healthy water for their families.
+The Water Store Owen Sound is an independently owned store at 1555 16th Street East,
+Owen Sound, Ontario. In business for 23 years (est. 2003), named Business of the Year
+in 2024, and part of The Water Stores Group (16 Ontario locations).
+
+Products and services:
+- Reverse osmosis and alkaline drinking water systems
+- 8 self-serve U-Fill refill stations (purified RO and alkaline water)
+- Water softeners, UV purifiers, air purifiers
+- Free water testing and quality analysis
+- Hot tubs, swim spas, and saunas
+- BBQ grills and pellet smokers (Traeger, Louisiana, Pitboss)
+- Hot tub delivery, servicing, and winterization
+- Financing available through Financeit
+
+Brand voice: friendly, knowledgeable, no pressure. Community-focused.
+Tagline: "Water treatment, hot tub, and BBQ experts for 23 years!"
+Hours: 9am–5pm daily. Phone: 519-371-8500.
 """
 
-# Content themes Claude rotates through to keep the feed varied
+# How many recent themes to look back when avoiding repeats.
+# With 9 themes and 3 posts/day, this ensures a theme isn't reused within ~3 posts.
+THEME_LOOKBACK = 4
+
+# Content themes — covers the full range of what the store sells
 CONTENT_THEMES = [
-    "product spotlight",
+    "drinking water systems (RO or alkaline)",
+    "U-Fill refill station",
+    "water softeners or water quality problem (staining, odor, hard water)",
+    "hot tubs or swim spas",
+    "BBQ grills or pellet smokers",
+    "saunas",
     "health and hydration tip",
-    "water quality education",
-    "seasonal promotion",
-    "customer lifestyle",
-    "behind the scenes",
-    "FAQ or common water misconception",
+    "free water testing offer",
+    "seasonal promotion or local Owen Sound community",
 ]
 
 DATABASE_URL = "sqlite:///./data/bot.db"
 IMAGE_SAVE_DIR = "./data/images"
 
-# When True, content is generated and saved locally but nothing is posted to Meta.
-# Useful for testing the AI pipeline without touching real social accounts.
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"

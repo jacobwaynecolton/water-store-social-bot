@@ -3,7 +3,7 @@ from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from backend.config import POST_TIMES, COMMENT_CHECK_INTERVAL, DRY_RUN
+from backend.config import POST_TIMES, COMMENT_CHECK_INTERVAL, DRY_RUN, THEME_LOOKBACK
 from backend.models import SessionLocal, Post, init_db
 from backend.content_generator import pick_theme, generate_post_content
 from backend.image_generator import generate_image
@@ -25,8 +25,16 @@ def run_posting_job():
     session.commit()
 
     try:
-        theme = pick_theme()
-        logger.info(f"Starting post job | theme: {theme}")
+        # Look back at recent posts so we don't repeat a similar theme too soon
+        recent_themes = [
+            r.theme for r in session.query(Post.theme)
+            .filter(Post.theme.isnot(None))
+            .order_by(Post.created_at.desc())
+            .limit(THEME_LOOKBACK)
+            .all()
+        ]
+        theme = pick_theme(recent_themes)
+        logger.info(f"Starting post job | theme: {theme} | avoided: {recent_themes}")
         record.theme = theme
         session.commit()
 
