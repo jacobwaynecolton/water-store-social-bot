@@ -24,15 +24,21 @@ def pick_theme(recent_themes: list[str] = []) -> str:
     return random.choice(available)
 
 
-def generate_post_content(theme: str) -> dict:
+def generate_post_content(theme: str, recent_themes: list[str] = []) -> dict:
     """
     Asks Claude to write a full post for the given theme.
+    Passing recent_themes lets Claude avoid producing content that feels
+    similar to what was just posted, even if the themes are technically different.
     Returns a dict with keys: facebook, instagram, hashtags, image_prompt.
     """
+    avoid_note = ""
+    if recent_themes:
+        avoid_note = f"\nThe last few posts covered: {', '.join(recent_themes)}. Make sure this post feels clearly different in tone, subject, and angle — even if the theme is adjacent.\n"
+
     prompt = f"""You are the social media manager for {BUSINESS_NAME} ({BUSINESS_WEBSITE}).
 
 About us: {BUSINESS_DESCRIPTION}
-
+{avoid_note}
 Today's content theme: {theme}
 
 Write a social media post with these four parts:
@@ -45,9 +51,11 @@ Write a social media post with these four parts:
 
    Rules for the image prompt:
    - Start with "A photograph of" or "A photo of"
-   - Describe a realistic, specific scene (a person, a product in a real setting, a backyard, a kitchen)
+   - Describe a realistic, specific scene — products in real settings, a backyard, a kitchen, a storefront
+   - DO NOT include any people or human figures. AI-generated faces and bodies look uncanny in
+     photo-realistic style. Focus on the product, the environment, hands if needed (no faces).
    - Include lighting details: "soft natural window light", "golden hour", "overcast Ontario sky"
-   - Include a camera feel: "shallow depth of field", "shot on 50mm lens", "candid moment"
+   - Include a camera feel: "shallow depth of field", "shot on 50mm lens"
    - Subjects should look like they belong in Owen Sound, Ontario — real Canadian homes, backyards, kitchens
    - No text, logos, or overlays in the image
    - No glowing effects, perfect gradients, or anything that looks rendered or CGI

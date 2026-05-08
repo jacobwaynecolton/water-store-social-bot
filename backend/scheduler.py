@@ -38,8 +38,8 @@ def run_posting_job():
         record.theme = theme
         session.commit()
 
-        # Generate captions (FB + IG) and a DALL-E prompt via Claude
-        content = generate_post_content(theme)
+        # Pass recent themes so Claude writes something that feels different, not just a different label
+        content = generate_post_content(theme, recent_themes)
         record.caption = content.get("instagram", "")
         session.commit()
 

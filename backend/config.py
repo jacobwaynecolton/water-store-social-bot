@@ -43,7 +43,9 @@ Hours: 9am–5pm daily. Phone: 519-371-8500.
 
 # How many recent themes to look back when avoiding repeats.
 # With 9 themes and 3 posts/day, this ensures a theme isn't reused within ~3 posts.
-THEME_LOOKBACK = 4
+# Look back this many posts when avoiding theme repeats. 6 posts = ~2 days at 3/day,
+# enough that even thematically adjacent topics (e.g. hot tubs + saunas) don't run close together.
+THEME_LOOKBACK = 6
 
 # Content themes — covers the full range of what the store sells
 CONTENT_THEMES = [
