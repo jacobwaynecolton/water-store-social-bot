@@ -42,3 +42,7 @@ CONTENT_THEMES = [
 
 DATABASE_URL = "sqlite:///./data/bot.db"
 IMAGE_SAVE_DIR = "./data/images"
+
+# When True, content is generated and saved locally but nothing is posted to Meta.
+# Useful for testing the AI pipeline without touching real social accounts.
+DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"
