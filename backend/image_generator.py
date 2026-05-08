@@ -35,21 +35,32 @@ def get_image_for_post(theme: str, dalle_prompt: str) -> tuple[str, str]:
 
 def _generate_illustration(prompt: str) -> tuple[str, str]:
     """
-    Generate an illustration-style image with DALL-E 3.
-    We use illustration rather than photo-realism because AI-generated product
-    details (lids, valves, labels) look wrong in realistic renders but fine in art styles.
+    Generate a styled image with DALL-E 3.
+    Claude embeds a STYLE: prefix in the prompt to pick between watercolour and infographic.
     Saves locally before the DALL-E URL expires (~1 hour).
     """
-    # Wrap the prompt in illustration framing so DALL-E doesn't try to be photorealistic
-    illustration_prompt = (
-        f"A clean watercolour illustration: {prompt}. "
-        "Soft watercolour style, loose brushwork, warm tones, no text, no logos. "
-        "Looks like editorial illustration, not a photograph or 3D render."
-    )
+    if prompt.startswith("STYLE:INFOGRAPHIC"):
+        subject = prompt[len("STYLE:INFOGRAPHIC"):].strip()
+        dalle_prompt = (
+            f"A clean social media infographic illustration: {subject}. "
+            "Flat design style, bold geometric shapes, limited palette of 2-3 colours, "
+            "icon-style graphics, modern and clean like a Canva template. "
+            "No text, no labels, no logos."
+        )
+    else:
+        # Default to watercolour — strip STYLE:WATERCOLOUR prefix if present
+        subject = prompt.replace("STYLE:WATERCOLOUR", "").strip()
+        dalle_prompt = (
+            f"A watercolour illustration: {subject}. "
+            "Soft watercolour style, loose brushwork, warm tones, no text, no logos. "
+            "Editorial illustration feel, not a photograph or 3D render."
+        )
+
+    illustration_prompt = dalle_prompt
 
     response = client.images.generate(
         model="dall-e-3",
-        prompt=illustration_prompt,
+        prompt=dalle_prompt,
         size="1024x1024",
         quality="standard",
         n=1,

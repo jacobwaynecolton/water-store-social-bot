@@ -46,17 +46,25 @@ Write a social media post with these four parts:
 1. Facebook caption — conversational, 2-3 sentences, no hashtags
 2. Instagram caption — punchy opening line, 3-5 sentences, ends with a call to action
 3. Instagram hashtags — 10-15 relevant tags
-4. Fallback image prompt for DALL-E 3 — this is used only if no real site photo is available,
-   so write it as a watercolour illustration concept, NOT a photograph.
+4. Fallback image prompt for DALL-E 3 — used only when no real approved photo is available.
+   First choose the best style for this post, then write the prompt for that style.
 
-   Rules for the image prompt:
-   - Describe the subject and mood only — no camera/photography language
-   - Think editorial illustration: what would a magazine spot-illustration for this topic look like?
-   - Keep it simple: one clear subject, a setting, a colour mood
-   - No people, no faces — focus on objects, environments, and atmosphere
-   - No text, logos, or product labels
-   Examples: "a steaming cedar hot tub surrounded by snow-dusted pine trees, warm amber tones",
-   "glass of water on a sunlit wooden kitchen counter, cool blues and warm neutrals"
+   Style options:
+   - WATERCOLOUR — best for lifestyle, seasonal, and atmospheric content (hot tubs, community,
+     outdoor scenes). Soft, warm, painterly. Good when the mood matters more than the facts.
+   - INFOGRAPHIC — best for educational or tip-based content (water quality facts, hydration stats,
+     product feature callouts). Clean flat design, bold shapes, icons, limited colour palette.
+     Think Canva template. No actual text in the image — just the visual layout and icons.
+
+   Rules for both styles:
+   - No people or faces
+   - No text, labels, or logos in the image
+   - Keep it simple — one clear subject or concept
+
+   Format the prompt like:
+   STYLE:WATERCOLOUR <description>
+   or
+   STYLE:INFOGRAPHIC <description>
 
 Use exactly this format, each on its own line:
 FACEBOOK: <caption>

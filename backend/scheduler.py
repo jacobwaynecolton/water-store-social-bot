@@ -7,6 +7,7 @@ from backend.config import POST_TIMES, COMMENT_CHECK_INTERVAL, DRY_RUN, THEME_LO
 from backend.models import SessionLocal, Post, init_db
 from backend.content_generator import pick_theme, generate_post_content
 from backend.image_generator import get_image_for_post
+from backend.image_scraper import analyze_and_tag_photos
 from backend.meta_api import post_to_facebook, post_to_instagram
 from backend.comment_responder import check_all_recent_comments
 
@@ -78,9 +79,16 @@ def run_posting_job():
         session.close()
 
 
+def _tag_new_photos():
+    """Analyze any untagged photos in data/approved_photos/ in a background thread."""
+    import threading
+    threading.Thread(target=analyze_and_tag_photos, daemon=True).start()
+
+
 def start_scheduler():
     """Register all jobs and start the scheduler. Called once at server startup."""
     init_db()
+    _tag_new_photos()  # picks up any photos dropped in while the server was offline
 
     for time_str in POST_TIMES:
         hour, minute = time_str.strip().split(":")
@@ -100,6 +108,15 @@ def start_scheduler():
         replace_existing=True,
     )
     logger.info(f"Comment check every {COMMENT_CHECK_INTERVAL} minutes")
+
+    # Re-tag any new photos dropped into approved_photos/ while the server is running
+    scheduler.add_job(
+        analyze_and_tag_photos,
+        trigger="interval",
+        hours=6,
+        id="photo_tagging",
+        replace_existing=True,
+    )
 
 
     scheduler.start()
