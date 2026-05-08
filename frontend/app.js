@@ -40,35 +40,66 @@ async function loadStatus() {
   }
 }
 
+// --- Modal ---
+let _posts = [];
+
+function openModal(post) {
+  document.getElementById("modal-img").src = post.image_url ?? "";
+  document.getElementById("modal-img").style.display = post.image_url ? "block" : "none";
+  document.getElementById("modal-theme").textContent = post.theme ?? "unknown theme";
+  document.getElementById("modal-status").className = `pill ${
+    { posted: "pill-posted", pending: "pill-pending", failed: "pill-failed" }[post.status] ?? ""
+  }`;
+  document.getElementById("modal-status").textContent = post.status;
+  document.getElementById("modal-date").textContent = fmt(post.posted_at);
+  document.getElementById("modal-caption").textContent = post.caption ?? "No caption";
+  document.getElementById("modal-overlay").classList.remove("hidden");
+}
+
+document.getElementById("modal-close").addEventListener("click", () => {
+  document.getElementById("modal-overlay").classList.add("hidden");
+});
+document.getElementById("modal-overlay").addEventListener("click", (e) => {
+  if (e.target === document.getElementById("modal-overlay")) {
+    document.getElementById("modal-overlay").classList.add("hidden");
+  }
+});
+
 // --- Posts ---
 async function loadPosts() {
   try {
     const posts = await fetchJSON("/api/posts");
+    _posts = posts;
     if (!posts.length) {
       document.getElementById("posts-body").innerHTML = `<tr><td colspan="6" class="empty">No posts yet</td></tr>`;
       return;
     }
-    const rows = posts.map(p => {
-      const fbLink = p.facebook_post_id
+    const rows = posts.map((p, i) => {
+      const fbLink = p.facebook_post_id && p.facebook_post_id !== "dry-run"
         ? `<a href="https://facebook.com/${p.facebook_post_id}" target="_blank"><span class="pill pill-fb">FB</span></a>`
-        : "—";
-      const igLink = p.instagram_post_id
+        : `<span style="color:#94a3b8;font-size:12px">${p.facebook_post_id === "dry-run" ? "dry-run" : "—"}</span>`;
+      const igLink = p.instagram_post_id && p.instagram_post_id !== "dry-run"
         ? `<a href="https://instagram.com/p/${p.instagram_post_id}" target="_blank"><span class="pill pill-ig">IG</span></a>`
-        : "—";
-      // Truncate long captions in the table
-      const caption = p.caption ? p.caption.slice(0, 120) + (p.caption.length > 120 ? "…" : "") : "—";
+        : `<span style="color:#94a3b8;font-size:12px">${p.instagram_post_id === "dry-run" ? "dry-run" : "—"}</span>`;
+      const caption = p.caption ? p.caption.slice(0, 80) + (p.caption.length > 80 ? "…" : "") : "—";
       return `
-        <tr>
+        <tr class="clickable" data-idx="${i}" title="Click to view full post">
           <td>${p.theme ?? "—"}</td>
           <td>${statusPill(p.status)}${p.error ? `<br><small style="color:#ef4444">${p.error.slice(0, 60)}</small>` : ""}</td>
           <td>${fmt(p.posted_at)}</td>
-          <td class="caption-cell" style="white-space:normal;max-width:300px">${caption}</td>
+          <td class="caption-cell" style="white-space:normal;max-width:260px">${caption}</td>
           <td>${fbLink}</td>
           <td>${igLink}</td>
         </tr>
       `;
     }).join("");
     document.getElementById("posts-body").innerHTML = rows;
+
+    // Attach click handlers to each row
+    document.querySelectorAll("#posts-body tr.clickable").forEach(row => {
+      row.addEventListener("click", () => openModal(_posts[+row.dataset.idx]));
+    });
+
   } catch (e) {
     console.error("Posts load failed:", e);
   }

@@ -1,4 +1,5 @@
 import logging
+import os
 import threading
 from contextlib import asynccontextmanager
 from sqlalchemy import desc
@@ -27,6 +28,9 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Water Store Social Bot", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
+# Serve generated images so the dashboard can display them
+os.makedirs("data/images", exist_ok=True)
+app.mount("/images", StaticFiles(directory="data/images"), name="images")
 templates = Jinja2Templates(directory="frontend")
 
 
@@ -51,6 +55,8 @@ async def get_posts(limit: int = 20):
                 "instagram_post_id": p.instagram_post_id,
                 "posted_at": p.posted_at.isoformat() if p.posted_at else None,
                 "created_at": p.created_at.isoformat() if p.created_at else None,
+                # Build a URL path the browser can fetch directly
+                "image_url": f"/images/{os.path.basename(p.image_local_path)}" if p.image_local_path else None,
             }
             for p in posts
         ]

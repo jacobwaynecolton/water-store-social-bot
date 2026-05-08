@@ -76,6 +76,27 @@
 
   </main>
 
+  <!-- Post detail modal -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <button id="modal-close" class="modal-close">&times;</button>
+      <div class="modal-body">
+        <div class="modal-image-wrap">
+          <img id="modal-img" src="" alt="Generated post image" />
+        </div>
+        <div class="modal-info">
+          <div class="modal-meta">
+            <span id="modal-theme" class="pill pill-pending"></span>
+            <span id="modal-status" class="pill"></span>
+            <span id="modal-date" style="color:#94a3b8;font-size:12px"></span>
+          </div>
+          <h3>Instagram / Facebook Caption</h3>
+          <pre id="modal-caption"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="/static/app.js"></script>
 </body>
 </html>
