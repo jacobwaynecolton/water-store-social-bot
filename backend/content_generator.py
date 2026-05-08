@@ -46,19 +46,17 @@ Write a social media post with these four parts:
 1. Facebook caption — conversational, 2-3 sentences, no hashtags
 2. Instagram caption — punchy opening line, 3-5 sentences, ends with a call to action
 3. Instagram hashtags — 10-15 relevant tags
-4. Image prompt for DALL-E 3 — write a prompt that will produce something that looks like
-   a real photograph, NOT a graphic or illustration.
+4. Fallback image prompt for DALL-E 3 — this is used only if no real site photo is available,
+   so write it as a watercolour illustration concept, NOT a photograph.
 
    Rules for the image prompt:
-   - Start with "A photograph of" or "A photo of"
-   - Describe a realistic, specific scene — products in real settings, a backyard, a kitchen, a storefront
-   - DO NOT include any people or human figures. AI-generated faces and bodies look uncanny in
-     photo-realistic style. Focus on the product, the environment, hands if needed (no faces).
-   - Include lighting details: "soft natural window light", "golden hour", "overcast Ontario sky"
-   - Include a camera feel: "shallow depth of field", "shot on 50mm lens"
-   - Subjects should look like they belong in Owen Sound, Ontario — real Canadian homes, backyards, kitchens
-   - No text, logos, or overlays in the image
-   - No glowing effects, perfect gradients, or anything that looks rendered or CGI
+   - Describe the subject and mood only — no camera/photography language
+   - Think editorial illustration: what would a magazine spot-illustration for this topic look like?
+   - Keep it simple: one clear subject, a setting, a colour mood
+   - No people, no faces — focus on objects, environments, and atmosphere
+   - No text, logos, or product labels
+   Examples: "a steaming cedar hot tub surrounded by snow-dusted pine trees, warm amber tones",
+   "glass of water on a sunlit wooden kitchen counter, cool blues and warm neutrals"
 
 Use exactly this format, each on its own line:
 FACEBOOK: <caption>

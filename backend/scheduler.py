@@ -6,7 +6,7 @@ from apscheduler.triggers.cron import CronTrigger
 from backend.config import POST_TIMES, COMMENT_CHECK_INTERVAL, DRY_RUN, THEME_LOOKBACK
 from backend.models import SessionLocal, Post, init_db
 from backend.content_generator import pick_theme, generate_post_content
-from backend.image_generator import generate_image
+from backend.image_generator import get_image_for_post
 from backend.meta_api import post_to_facebook, post_to_instagram
 from backend.comment_responder import check_all_recent_comments
 
@@ -43,9 +43,9 @@ def run_posting_job():
         record.caption = content.get("instagram", "")
         session.commit()
 
-        # Generate the image and save it locally before the DALL-E URL expires
-        dalle_url, local_path = generate_image(content["image_prompt"])
-        record.image_url = dalle_url
+        # Prefer a real site photo; fall back to a DALL-E illustration if none match the theme
+        public_url, local_path = get_image_for_post(theme, content["image_prompt"])
+        record.image_url = public_url
         record.image_local_path = local_path
         session.commit()
 
@@ -100,6 +100,7 @@ def start_scheduler():
         replace_existing=True,
     )
     logger.info(f"Comment check every {COMMENT_CHECK_INTERVAL} minutes")
+
 
     scheduler.start()
     return scheduler

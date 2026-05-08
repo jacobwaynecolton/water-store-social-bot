@@ -28,10 +28,21 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Water Store Social Bot", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
-# Serve generated images so the dashboard can display them
+# Serve generated images and any real photos dropped into approved_photos/
 os.makedirs("data/images", exist_ok=True)
+os.makedirs("data/approved_photos", exist_ok=True)
 app.mount("/images", StaticFiles(directory="data/images"), name="images")
+app.mount("/approved-photos", StaticFiles(directory="data/approved_photos"), name="approved-photos")
 templates = Jinja2Templates(directory="frontend")
+
+
+def _image_url(local_path: str | None) -> str | None:
+    if not local_path:
+        return None
+    filename = os.path.basename(local_path)
+    if "approved_photos" in local_path:
+        return f"/approved-photos/{filename}"
+    return f"/images/{filename}"
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -55,8 +66,9 @@ async def get_posts(limit: int = 20):
                 "instagram_post_id": p.instagram_post_id,
                 "posted_at": p.posted_at.isoformat() if p.posted_at else None,
                 "created_at": p.created_at.isoformat() if p.created_at else None,
-                # Build a URL path the browser can fetch directly
-                "image_url": f"/images/{os.path.basename(p.image_local_path)}" if p.image_local_path else None,
+                # Build a URL the browser can fetch — route depends on where the file lives
+                "image_url": _image_url(p.image_local_path),
+                "image_source": "approved" if (p.image_local_path and "approved_photos" in p.image_local_path) else "generated",
             }
             for p in posts
         ]
